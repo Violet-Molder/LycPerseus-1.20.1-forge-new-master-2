@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "lyc_perseus:block/dimension_finder_top",
+    "east": "lyc_perseus:block/dimension_finder_side",
+    "north": "lyc_perseus:block/dimension_finder_front_on",
+    "particle": "lyc_perseus:block/dimension_finder_top",
+    "south": "lyc_perseus:block/dimension_finder_side",
+    "up": "lyc_perseus:block/dimension_finder_top",
+    "west": "lyc_perseus:block/dimension_finder_side"
+  }
+}

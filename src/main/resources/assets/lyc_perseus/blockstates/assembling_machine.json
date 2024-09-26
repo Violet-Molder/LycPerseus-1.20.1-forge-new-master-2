@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=west": {
+      "model": "lyc_perseus:block/assembling_machine",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "lyc_perseus:block/assembling_machine",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "lyc_perseus:block/assembling_machine",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "lyc_perseus:block/assembling_machine",
+      "y": 180
+    }
+  }
+}

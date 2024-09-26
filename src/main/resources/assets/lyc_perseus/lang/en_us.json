@@ -1,0 +1,23 @@
+{
+  "creativetab.lp_tab": "LycPerseus Item Group",
+  "block.lyc_perseus.dimension_finder": "Dimension Finder",
+
+  "block.lyc_perseus.assembling_machine": "Assembling Machine",
+  "block.lyc_perseus.decomposition_extractor": "Decomposition Extractor",
+
+  "item.lyc_perseus.auxiliary_reaction_furnace": "Auxiliary Reaction Furnace",
+  "item.lyc_perseus.utility_mining_rune": "Utility Mining Rune",
+  "item.lyc_perseus.shadow_transmission_module": "Shadow Transmission Module",
+  "item.lyc_perseus.biosolid_fuels": "Biosolid Fuels",
+  "item.lyc_perseus.divine_crystal": "Divine Crystal",
+  "item.lyc_perseus.philosopher_stone": "Philosopher Stone",
+
+  "item.lyc_perseus.potato_power": "Potato Power",
+  "item.lyc_perseus.disposable_batteries": "Disposable Batteries",
+  "item.lyc_perseus.storage_battery": "Storage Battery",
+
+
+  "tooltip.lycperseus.extra_1": "Improve fuel efficiency by 50%",
+  "tooltip.lycperseus.extra_2": "15% chance of additional yield",
+  "tooltip.lycperseus.extra_3": "Increases item transfer time by 20%"
+}

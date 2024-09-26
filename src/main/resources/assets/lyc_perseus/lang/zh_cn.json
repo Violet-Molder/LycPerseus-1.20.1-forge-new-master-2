@@ -1,0 +1,23 @@
+{
+  "creativetab.lp_tab": "柏修斯之屿-彼岸",
+  "block.lyc_perseus.dimension_finder": "维度探测器",
+
+  "block.lyc_perseus.assembling_machine": "组装机",
+  "block.lyc_perseus.decomposition_extractor": "分解机",
+
+  "item.lyc_perseus.auxiliary_reaction_furnace": "辅助反应炉",
+  "item.lyc_perseus.utility_mining_rune": "效用开采符文",
+  "item.lyc_perseus.shadow_transmission_module": "末影传输模块",
+  "item.lyc_perseus.biosolid_fuels": "生物质",
+  "item.lyc_perseus.divine_crystal": "神孽水晶",
+  "item.lyc_perseus.philosopher_stone": "贤者之石",
+
+  "item.lyc_perseus.potato_power": "土豆能源",
+  "item.lyc_perseus.disposable_batteries": "一次性电池",
+  "item.lyc_perseus.storage_battery": "蓄电池组",
+
+
+  "tooltip.lycperseus.extra_1": "提高50%燃料效率",
+  "tooltip.lycperseus.extra_2": "15%额外产量概率",
+  "tooltip.lycperseus.extra_3": "提高20%传输物品时间"
+}

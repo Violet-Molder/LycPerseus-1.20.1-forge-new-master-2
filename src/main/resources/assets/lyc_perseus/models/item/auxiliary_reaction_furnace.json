@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lyc_perseus:item/auxiliary_reaction_furnace"
+  }
+}

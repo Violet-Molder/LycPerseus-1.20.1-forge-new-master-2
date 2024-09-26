@@ -1,0 +1,11 @@
+{
+  "type": "lyc_perseus:dimension_finder",
+  "group": "optional_group_name",
+  "ingredients": [
+    {"tag": "minecraft:logs"}
+  ],
+  "output": {
+    "item": "minecraft:iron_ingot"
+  },
+  "time": 300
+}

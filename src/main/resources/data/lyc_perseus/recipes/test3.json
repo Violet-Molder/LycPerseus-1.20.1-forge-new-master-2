@@ -1,0 +1,22 @@
+{
+  "type": "lyc_perseus:decomposition_extractor_recipe",
+  "group": "optional_group_name",
+  "ingredients": [
+    {
+      "item": "minecraft:coal",
+      "minCount": 1,
+      "maxCount": 4,
+      "isEmpty": 80
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "minCount": 1,
+      "maxCount": 3,
+      "isEmpty": 20
+    }
+  ],
+  "output": {
+    "tag": "minecraft:logs"
+  },
+  "time": 15
+}

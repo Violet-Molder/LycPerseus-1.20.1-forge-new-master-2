@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "is_on=true,facing=west": {
+      "model": "lyc_perseus:block/dimension_finder_on",
+      "y": 270
+    },
+    "is_on=true,facing=north": {
+      "model": "lyc_perseus:block/dimension_finder_on",
+      "y": 0
+    },
+    "is_on=true,facing=east": {
+      "model": "lyc_perseus:block/dimension_finder_on",
+      "y": 90
+    },
+    "is_on=true,facing=south": {
+      "model": "lyc_perseus:block/dimension_finder_on",
+      "y": 180
+    },
+    "is_on=false,facing=west": {
+      "model": "lyc_perseus:block/dimension_finder",
+      "y": 270
+    },
+    "is_on=false,facing=north": {
+      "model": "lyc_perseus:block/dimension_finder",
+      "y": 0
+    },
+    "is_on=false,facing=east": {
+      "model": "lyc_perseus:block/dimension_finder",
+      "y": 90
+    },
+    "is_on=false,facing=south": {
+      "model": "lyc_perseus:block/dimension_finder",
+      "y": 180
+    }
+  }
+}

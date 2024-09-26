@@ -1,0 +1,21 @@
+{
+  "type": "lyc_perseus:assembling_machine_recipe",
+  "group": "optional_group_name",
+  "ingredients": [
+    {"item": "minecraft:gold_ingot",
+      "count": 2},
+    {"item": "minecraft:stone",
+      "count": 3},
+    {"item": "minecraft:stick",
+      "count": 4},
+    {"item": "minecraft:diamond",
+      "count": 5},
+    {"item": "minecraft:redstone",
+      "count": 6}
+  ],
+  "output": {
+    "item": "minecraft:iron_ingot",
+    "count": 4
+  },
+  "time": 15
+}

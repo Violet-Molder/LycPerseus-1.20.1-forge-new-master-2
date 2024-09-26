@@ -1,0 +1,25 @@
+{
+  "type": "lyc_perseus:decomposition_extractor_recipe",
+  "group": "optional_group_name",
+  "ingredients": [
+    {
+      "item": "minecraft:potion",
+      "minCount": 1,
+      "maxCount": 4,
+      "isEmpty": 80,
+      "nbtId": "Potion",
+      "nbtValue": "minecraft:healing"
+    },
+    {
+      "item": "minecraft:enchanted_book",
+      "minCount": 1,
+      "maxCount": 3,
+      "nbtId": "Enchants",
+      "nbtValue": "minecraft:thorns"
+    }
+  ],
+  "output": {
+    "item": "minecraft:iron_ingot"
+  },
+  "time": 15
+}
