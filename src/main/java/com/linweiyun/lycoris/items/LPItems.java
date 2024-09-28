@@ -22,14 +22,17 @@ public class LPItems {
 
     public static final RegistryObject<Item> DECOMPOSITION_EXTRACTOR_ITEM = ITEMS.register("decomposition_extractor",
             ()-> new BlockItem(LPBlocks.DECOMPOSITION_EXTRACTOR.get(), new Item.Properties()));
+    public static final RegistryObject<Item> WEAPON_WORKBENCH_ITEM = ITEMS.register("weapon_workbench",
+            ()-> new BlockItem(LPBlocks.WEAPON_WORKBENCH.get(), new Item.Properties()));
+
 
 
     public static final RegistryObject<Item> BIOSOLID_FUELS = ITEMS.register("biosolid_fuels",
-            ()->new SoulItem(new Item.Properties(), 1200));
+            ()->new SoulItem(new Item.Properties().durability(16)));
     public static final RegistryObject<Item> DIVINE_CRYSTAL = ITEMS.register("divine_crystal",
-            ()->new SoulItem(new Item.Properties(), 4800));
+            ()->new SoulItem(new Item.Properties().durability(64)));
     public static final RegistryObject<Item> PHILOSOPHER_STONE = ITEMS.register("philosopher_stone",
-            ()->new SoulItem(new Item.Properties(), 76800));
+            ()->new SoulItem(new Item.Properties().durability(1024)));
 
 
     public static final RegistryObject<Item> AUXILIARY_REACTION_FURNACE = ITEMS.register("auxiliary_reaction_furnace",

@@ -21,7 +21,8 @@ public class LycorisMenuType {
 
     public static final RegistryObject<MenuType<DimensionFinderMenu>> DIMENSION_FINDER_MENU_TYPE =
             registerMenuType(DimensionFinderMenu::new,"dimension_finder_menu_type");
-
+    public static final RegistryObject<MenuType<WeaponWorkbenchMenu>> WEAPON_WORKBENCH_MENU_TYPE =
+            registerMenuType(WeaponWorkbenchMenu::new,"weapon_workbench_menu_type");
 
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory,
                                                                                                  String name){

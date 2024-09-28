@@ -1,0 +1,25 @@
+{
+  "type": "lyc_perseus:weapon_workbench",
+  "group": "optional_group_name",
+  "ingredients": [
+    {
+      "item": "minecraft:potion",
+      "nbtId3": "Potion",
+      "nbtValue3": "minecraft:healing"
+    },
+
+    {
+      "item": "minecraft:iron_ingot"
+    },
+
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {"item": "minecraft:diamond"}
+
+  ],
+  "output": {
+    "item": "minecraft:iron_ingot"
+  },
+  "time": 2
+}

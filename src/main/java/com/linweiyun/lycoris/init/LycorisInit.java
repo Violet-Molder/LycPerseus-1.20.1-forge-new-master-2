@@ -3,7 +3,7 @@ package com.linweiyun.lycoris.init;
 
 import com.linweiyun.lycoris.LPItemGroups;
 import com.linweiyun.lycoris.block.LPBlocks;
-import com.linweiyun.lycoris.block.blockentity.LPBlockEntities;
+import com.linweiyun.lycoris.block.LPBlockEntities;
 import com.linweiyun.lycoris.items.LPItems;
 import com.linweiyun.lycoris.recipetype.LPerseusRecipe;
 import com.linweiyun.lycoris.screen.*;
@@ -31,6 +31,7 @@ public class LycorisInit {
         MenuScreens.register(LycorisMenuType.DIMENSION_FINDER_MENU_TYPE.get(), DimensionFinderScreen::new);
         MenuScreens.register(LycorisMenuType.ASSEMBLING_MACHINE_MENU.get(), AssemblingMachineScreen::new);
         MenuScreens.register(LycorisMenuType.DECOMPOSITION_EXTRACTOR_MENU.get(), DecompositionExtractorScreen::new);
+        MenuScreens.register(LycorisMenuType.WEAPON_WORKBENCH_MENU_TYPE.get(), WeaponWorkbenchScreen::new);
     }
 
     public static void registerLPItemgroups(IEventBus eventBus) {

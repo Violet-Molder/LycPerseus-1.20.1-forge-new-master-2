@@ -3,6 +3,7 @@
   "values": [
     "lyc_perseus:dimension_finder",
     "lyc_perseus:decomposition_extractor",
-    "lyc_perseus:assembling_machine"
+    "lyc_perseus:assembling_machine",
+    "lyc_perseus:weapon_workbench"
   ]
 }

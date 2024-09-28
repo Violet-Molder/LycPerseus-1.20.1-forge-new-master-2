@@ -21,6 +21,8 @@ public class LPBlocks {
     public static final RegistryObject<Block> DECOMPOSITION_EXTRACTOR = BLOCKS.register("decomposition_extractor",
             ()-> new DecompositionExtractor(Block.Properties.of().strength(0.8f, 6.0f).noOcclusion()));
 
+    public static final RegistryObject<Block> WEAPON_WORKBENCH = BLOCKS.register("weapon_workbench",
+            ()-> new WeaponWorkbench(Block.Properties.of().strength(0.8f, 6.0f).noOcclusion()));
 
 
     public static void register(IEventBus eventBus)

@@ -1,7 +1,9 @@
 package com.linweiyun.lycoris;
 
+import com.linweiyun.lycoris.block.LPBlocks;
 import com.linweiyun.lycoris.init.LycorisInit;
-import com.linweiyun.lycoris.netWorking.LPMessages;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,7 +38,7 @@ public class LycPerseusMod
         LycorisInit.registerLPItemgroups(modEventBus);
         GeckoLib.initialize();
 
-        LPMessages.register();
+
 
     }
 
@@ -60,6 +62,7 @@ public class LycPerseusMod
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             LycorisInit.registerLPScreens();
+            ItemBlockRenderTypes.setRenderLayer(LPBlocks.DECOMPOSITION_EXTRACTOR.get(), RenderType.cutout());
 
         }
     }

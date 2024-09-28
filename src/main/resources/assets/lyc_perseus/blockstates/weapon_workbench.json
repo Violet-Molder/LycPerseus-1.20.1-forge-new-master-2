@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=west": {
+      "model": "lyc_perseus:block/weapon_workbench",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "lyc_perseus:block/weapon_workbench",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "lyc_perseus:block/weapon_workbench",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "lyc_perseus:block/weapon_workbench",
+      "y": 180
+    }
+  }
+}

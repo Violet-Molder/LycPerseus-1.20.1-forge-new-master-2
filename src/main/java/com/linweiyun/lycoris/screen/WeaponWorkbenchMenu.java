@@ -1,8 +1,7 @@
 package com.linweiyun.lycoris.screen;
 
 import com.linweiyun.lycoris.block.LPBlocks;
-import com.linweiyun.lycoris.block.blockentity.DecompositionExtractorBlockEntity;
-import com.linweiyun.lycoris.items.custom.BatteryItem;
+import com.linweiyun.lycoris.block.blockentity.WeaponWorkbenchEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,55 +11,106 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
-public class DecompositionExtractorMenu extends AbstractContainerMenu  {
-    public final DecompositionExtractorBlockEntity entity;
+public class WeaponWorkbenchMenu extends AbstractContainerMenu  {
+    public final WeaponWorkbenchEntity entity;
     private final Level level;
     private final ContainerData data;
 
-    public DecompositionExtractorMenu(int id, Inventory inventory, FriendlyByteBuf extraData){
-        this(id,inventory, inventory.player.level().getBlockEntity( extraData.readBlockPos()), new SimpleContainerData(2));
+    public WeaponWorkbenchMenu(int id, Inventory inventory, FriendlyByteBuf extraData){
+        this(id,inventory, inventory.player.level().getBlockEntity( extraData.readBlockPos()),new SimpleContainerData(20));
     }
 
-    public DecompositionExtractorMenu(int id, Inventory inv, BlockEntity entity, ContainerData data){
-        super(LycorisMenuType.DECOMPOSITION_EXTRACTOR_MENU.get(),id);
-
+    public WeaponWorkbenchMenu(int id, Inventory inv, BlockEntity entity, ContainerData data){
+        super(LycorisMenuType.WEAPON_WORKBENCH_MENU_TYPE.get(),id);
         // 检查slots是否为8
         checkContainerSize(inv,8);
-        this.entity = (DecompositionExtractorBlockEntity) entity;
+        this.entity = (WeaponWorkbenchEntity) entity;
         this.level = inv.player.level();
-        this.data = data;
-        addPlayerInventory(inv);
-        addPlayerHotbar(inv);
+        this.data =data;
+        // 处理玩家的背包和物品栏
+
 
         // 为当的menu增加3个slot，分别对应itemhandler的0,1,2,
         this.entity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            for (int i = 0; i < 2; i++){
-                for (int j = 0; j < 3; j++){
-                    this.addSlot(new SlotItemHandler(handler,j+i*3,113+j*19,42+i*18){
-                        @Override
-                        public boolean mayPlace(ItemStack stack) {
-                            return true;
-                        }
-                    });
-                }
-            }
-            this.addSlot(new SlotItemHandler(handler,6,10,28){
+            addSlot(new SlotItemHandler(handler, 0, 143, 13));
+            addSlot(new SlotItemHandler(handler, 1, 143, 53){
                 @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return stack.getItem() instanceof BatteryItem;
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler,7,46,28));
+            int row = 0;
+            int col = 0;
+
+            for (int i = 0; i < 18; i++) {
+                if (col >= 6) {
+                    row++;
+                    col = 0;
+                }
+                    addSlot(new SlotItemHandler(handler, i + 2, 13 + col * 19, 13 + row * 19){
+                        @Override
+                        public boolean mayPickup(Player playerIn) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean mayPlace(@NotNull ItemStack stack) {
+                            return false;
+                        }
+                    });
+
+                // 添加槽位
+
+
+                col++;
+            }
         });
+        addPlayerInventory(inv);
+        addPlayerHotbar(inv);
         // 将进度数据同步到Client
         addDataSlots(data);
+    }
+
+    @Override
+    public boolean clickMenuButton(Player pPlayer, int pId) {
+        return super.clickMenuButton(pPlayer, pId);
+    }
+
+    @Override
+    public void clicked(int pSlotId, int pButton, ClickType pClickType, Player pPlayer) {
+        if (!pPlayer.level().isClientSide){
+            if (pSlotId >= 2 && pSlotId < 20){
+                ItemStack itemStack = entity.itemStackHandler.getStackInSlot(pSlotId).copy();
+                ItemStack outStack = entity.itemStackHandler.getStackInSlot(1);
+                // 确保输出的物品保留 NBT 标签
+                if (!itemStack.isEmpty()) {
+                    if (itemStack.getItem() == outStack.getItem() &&
+                            outStack.getCount() < outStack.getMaxStackSize()){
+                        itemStack.setCount(outStack.getCount() + 1);
+                    }
+                    // 数量加 1
+
+                    // 将输出的物品放入 1 号槽位
+                    entity.itemStackHandler.setStackInSlot(1, itemStack);
+                }
+            } else if (pSlotId == 1){
+                ItemStack itemStack = entity.itemStackHandler.getStackInSlot(1);
+                if (!itemStack.isEmpty()){
+                    entity.itemStackHandler.extractItem(0,entity.itemStackHandler.getStackInSlot(1).getCount(),false);
+                }
+
+            }
+        }
+
+        super.clicked(pSlotId, pButton, pClickType, pPlayer);
     }
 
     private void addPlayerInventory(Inventory playerInventory){
         for (int i=0;i<3;i++){
             for (int l =0;l<9;l++){
-                this.addSlot(new Slot(playerInventory,l+i*9+9,10+l*18,85+i*18));
+                this.addSlot(new Slot(playerInventory,l+i*9+9,8+l*18,84+i*18));
             }
         }
     }
@@ -68,15 +118,8 @@ public class DecompositionExtractorMenu extends AbstractContainerMenu  {
 
     private void addPlayerHotbar(Inventory playerInventory){
         for(int i=0;i<9;i++){
-            this.addSlot(new Slot(playerInventory,i,10 +i*18,143));
+            this.addSlot(new Slot(playerInventory,i,8+i*18,142));
         }
-    }
-
-    public int getScaledProgress() {
-        int progress = this.data.get(0);
-        int maxProgress = this.data.get(1);  // Max Progress
-        int progressArrowSize = 36; // This is the height in pixels of your arrow
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
 
@@ -98,7 +141,7 @@ public class DecompositionExtractorMenu extends AbstractContainerMenu  {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 8;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 20;  // must be the number of slots you have!
 
 
     @Override
@@ -127,6 +170,11 @@ public class DecompositionExtractorMenu extends AbstractContainerMenu  {
         } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
             // 4.2 如果是TE槽位（如方块内部的特殊库存槽位）
             // 尝试将物品堆栈转移到玩家库存中
+            if (index >= 2 && index < 20) {
+                // 禁止快速移动
+                return copyOfSourceStack;
+            }
+
 
             if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
                 // 移动失败则返回空物品堆栈
@@ -158,7 +206,7 @@ public class DecompositionExtractorMenu extends AbstractContainerMenu  {
     public boolean stillValid(Player player) {
         // containerLevelAccess 在服务器创建一个 containerlevelaccesss对象，提供了当前的世界和方块位置是否在一个封闭的范围
         return stillValid(ContainerLevelAccess.create(level,entity.getBlockPos()),
-                player, LPBlocks.DECOMPOSITION_EXTRACTOR.get());
+                player, LPBlocks.WEAPON_WORKBENCH.get());
     }
 
 

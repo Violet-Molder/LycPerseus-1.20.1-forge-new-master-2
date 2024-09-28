@@ -1,7 +1,10 @@
-package com.linweiyun.lycoris.block.blockentity;
+package com.linweiyun.lycoris.block;
 
 import com.linweiyun.lycoris.LycPerseusMod;
-import com.linweiyun.lycoris.block.LPBlocks;
+import com.linweiyun.lycoris.block.blockentity.AssemblingMachineBlockEntity;
+import com.linweiyun.lycoris.block.blockentity.DecompositionExtractorBlockEntity;
+import com.linweiyun.lycoris.block.blockentity.DimensionFinderEntity;
+import com.linweiyun.lycoris.block.blockentity.WeaponWorkbenchEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,7 +23,8 @@ public class LPBlockEntities {
 
     public static final RegistryObject<BlockEntityType<DecompositionExtractorBlockEntity>> DECOMPOSITION_EXTRACTOR = BLOCK_ENTITIES.register("decomposition_extractor",
             () -> BlockEntityType.Builder.of(DecompositionExtractorBlockEntity::new, LPBlocks.DECOMPOSITION_EXTRACTOR.get()).build(null));
-
+    public static final RegistryObject<BlockEntityType<WeaponWorkbenchEntity>> WEAPON_WORKBENCH = BLOCK_ENTITIES.register("weapon_workbench",
+            () -> BlockEntityType.Builder.of(WeaponWorkbenchEntity::new, LPBlocks.WEAPON_WORKBENCH.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

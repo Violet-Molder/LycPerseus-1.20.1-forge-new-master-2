@@ -4,6 +4,7 @@
 
   "block.lyc_perseus.assembling_machine": "Assembling Machine",
   "block.lyc_perseus.decomposition_extractor": "Decomposition Extractor",
+  "block.lyc_perseus.weapon_workbench": "Weapon Workbench",
 
   "item.lyc_perseus.auxiliary_reaction_furnace": "Auxiliary Reaction Furnace",
   "item.lyc_perseus.utility_mining_rune": "Utility Mining Rune",
@@ -17,7 +18,7 @@
   "item.lyc_perseus.storage_battery": "Storage Battery",
 
 
-  "tooltip.lycperseus.extra_1": "Improve fuel efficiency by 50%",
+  "tooltip.lycperseus.extra_1": "Reduce battery consumption by 1 point per production",
   "tooltip.lycperseus.extra_2": "15% chance of additional yield",
   "tooltip.lycperseus.extra_3": "Increases item transfer time by 20%"
 }

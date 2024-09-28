@@ -1,7 +1,7 @@
 package com.linweiyun.lycoris.block.custom;
 
-import com.linweiyun.lycoris.block.blockentity.DimensionFinderEntity;
 import com.linweiyun.lycoris.block.LPBlockEntities;
+import com.linweiyun.lycoris.block.blockentity.WeaponWorkbenchEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -24,15 +24,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class DimensionFinder extends BaseEntityBlock {
-    public DimensionFinder(Properties pProperties) {
+public class WeaponWorkbench extends BaseEntityBlock {
+    public WeaponWorkbench(Properties pProperties) {
         super(pProperties);
     }
-    public static final BooleanProperty IS_ON = BooleanProperty.create("is_on");
 
-    public boolean getIsOn(BlockState pState) {
-        return pState.getValue(IS_ON);
-    }
 
     @Override
     public RenderShape getRenderShape(BlockState pState) {
@@ -41,22 +37,22 @@ public class DimensionFinder extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(new Property[]{HorizontalDirectionalBlock.FACING, IS_ON});
+        pBuilder.add(new Property[]{HorizontalDirectionalBlock.FACING});
     }
 
 
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, context.getHorizontalDirection().getOpposite()).setValue(IS_ON, false);
+        return this.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof DimensionFinderEntity) {
-                ((DimensionFinderEntity) blockEntity).drops();
+            if (blockEntity instanceof WeaponWorkbenchEntity) {
+                ((WeaponWorkbenchEntity) blockEntity).drops();
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
@@ -66,8 +62,8 @@ public class DimensionFinder extends BaseEntityBlock {
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if (entity instanceof DimensionFinderEntity) {
-                NetworkHooks.openScreen(((ServerPlayer) pPlayer), (DimensionFinderEntity) entity, pPos);
+            if (entity instanceof WeaponWorkbenchEntity) {
+                NetworkHooks.openScreen(((ServerPlayer) pPlayer), (WeaponWorkbenchEntity) entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
@@ -79,12 +75,12 @@ public class DimensionFinder extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new DimensionFinderEntity(blockPos, blockState);
+        return new WeaponWorkbenchEntity(blockPos, blockState);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, LPBlockEntities.DIMENSION_FINDER.get(), DimensionFinderEntity::tick);
+        return createTickerHelper(pBlockEntityType, LPBlockEntities.WEAPON_WORKBENCH.get(), WeaponWorkbenchEntity::tick);
     }
 }

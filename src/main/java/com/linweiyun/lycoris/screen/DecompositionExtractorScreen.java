@@ -36,9 +36,6 @@ public class DecompositionExtractorScreen extends AbstractContainerScreen<Decomp
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         guiGraphics.blit(BackgroundTexture, x, y, 176,12 ,menu.getScaledProgress(),5, this.imageWidth, this.imageHeight);
-
-
-
     }
 
     // 先添加背景，在添加super渲染容器，在添加提示信息。

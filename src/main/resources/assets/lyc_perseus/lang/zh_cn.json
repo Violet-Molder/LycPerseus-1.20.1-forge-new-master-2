@@ -4,6 +4,7 @@
 
   "block.lyc_perseus.assembling_machine": "组装机",
   "block.lyc_perseus.decomposition_extractor": "分解机",
+  "block.lyc_perseus.weapon_workbench": "武器工作台",
 
   "item.lyc_perseus.auxiliary_reaction_furnace": "辅助反应炉",
   "item.lyc_perseus.utility_mining_rune": "效用开采符文",
@@ -17,7 +18,7 @@
   "item.lyc_perseus.storage_battery": "蓄电池组",
 
 
-  "tooltip.lycperseus.extra_1": "提高50%燃料效率",
+  "tooltip.lycperseus.extra_1": "降低1点每次制作消耗的电池电量",
   "tooltip.lycperseus.extra_2": "15%额外产量概率",
   "tooltip.lycperseus.extra_3": "提高20%传输物品时间"
 }

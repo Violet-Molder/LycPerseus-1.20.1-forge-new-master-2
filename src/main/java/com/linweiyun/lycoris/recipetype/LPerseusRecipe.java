@@ -19,9 +19,10 @@ public class LPerseusRecipe {
     public static final RegistryObject<RecipeSerializer<DecompositionExtractorRecipe>> DECOMPOSITION_EXTRACTOR_RECIPE =
             SERIALIZERS.register("decomposition_extractor_recipe", () -> DecompositionExtractorRecipe.Serializer.INSTANCE);
 
-    public static final RegistryObject<RecipeSerializer<LPDimensionFinderRecipeType>> LV1_INJECTING_MAGIC_ALTAR_RECIPE_TYPE =
-            SERIALIZERS.register("dimension_finder", () -> LPDimensionFinderRecipeType.Serializer.INSTANCE);
-
+    public static final RegistryObject<RecipeSerializer<DimensionFinderRecipeType>> DIMENSION_FINDER_RECIPE_TYPE =
+            SERIALIZERS.register("dimension_finder", () -> DimensionFinderRecipeType.Serializer.INSTANCE);
+    public static final RegistryObject<RecipeSerializer<WeaponWorkbenchRecipeType>> WEAPON_WORKBENCH_RECIPE_TYPE =
+            SERIALIZERS.register("weapon_workbench", () -> WeaponWorkbenchRecipeType.Serializer.INSTANCE);
 
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);

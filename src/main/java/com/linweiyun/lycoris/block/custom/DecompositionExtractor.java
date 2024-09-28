@@ -1,8 +1,7 @@
 package com.linweiyun.lycoris.block.custom;
 
 import com.linweiyun.lycoris.block.blockentity.DecompositionExtractorBlockEntity;
-import com.linweiyun.lycoris.block.blockentity.LPBlockEntities;
-import com.linweiyun.lycoris.screen.DecompositionExtractorScreen;
+import com.linweiyun.lycoris.block.LPBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -62,7 +61,6 @@ public class DecompositionExtractor extends BaseEntityBlock {
         if (!pLevel.isClientSide()) {
 
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            System.out.println(entity);
             if (entity instanceof DecompositionExtractorBlockEntity) {
                 NetworkHooks.openScreen(((ServerPlayer) pPlayer), (DecompositionExtractorBlockEntity) entity, pPos);
             } else {

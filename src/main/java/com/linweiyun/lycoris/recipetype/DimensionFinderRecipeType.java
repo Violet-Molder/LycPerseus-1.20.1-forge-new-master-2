@@ -1,7 +1,6 @@
 package com.linweiyun.lycoris.recipetype;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.linweiyun.lycoris.LycPerseusMod;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -21,13 +20,13 @@ import org.jetbrains.annotations.Nullable;
 // 通过container子类提供数据
 // 任何输入的Container都应该是不可变的，任何的操作都应该通过copy输入副本。
 
-public class LPDimensionFinderRecipeType implements Recipe<SimpleContainer> {
+public class DimensionFinderRecipeType implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> material;
     private final int time;
-    public LPDimensionFinderRecipeType(ResourceLocation id, ItemStack output,
-                                       NonNullList<Ingredient> catalyst, int time){
+    public DimensionFinderRecipeType(ResourceLocation id, ItemStack output,
+                                     NonNullList<Ingredient> catalyst, int time){
         this.id = id;
         this.output = output;
         this.material = catalyst;
@@ -108,7 +107,7 @@ public boolean matches(SimpleContainer pContainer, Level pLevel) {
     }
 
     // 注册新的合成的type
-    public static class Type implements RecipeType<LPDimensionFinderRecipeType>{
+    public static class Type implements RecipeType<DimensionFinderRecipeType>{
         private Type(){}
         public static final Type INSTANCE = new Type();
         // 标识了合成的类型，和json文件中的type一致
@@ -117,13 +116,13 @@ public boolean matches(SimpleContainer pContainer, Level pLevel) {
 
     // 负责解码JSON并通过网络通信
     // 需要注册
-    public static class Serializer implements RecipeSerializer<LPDimensionFinderRecipeType> {
+    public static class Serializer implements RecipeSerializer<DimensionFinderRecipeType> {
         public static final Serializer INSTANCE = new Serializer();
         public static final  ResourceLocation ID =
                 new ResourceLocation(LycPerseusMod.MOD_ID,"dimension_finder");
         // 将JSON解码为recipe子类型
         @Override
-        public LPDimensionFinderRecipeType fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
+        public DimensionFinderRecipeType fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe,"output"));
 
             JsonArray ingredients = GsonHelper.getAsJsonArray(pSerializedRecipe,"ingredients");
@@ -135,22 +134,22 @@ public boolean matches(SimpleContainer pContainer, Level pLevel) {
             for(int i =0;i<inputs.size();i++){
                 inputs.set(i,Ingredient.fromJson(ingredients.get(i)));
             }
-            return new LPDimensionFinderRecipeType(pRecipeId,output,inputs, time);
+            return new DimensionFinderRecipeType(pRecipeId,output,inputs, time);
         }
         // 从服务器中发送的数据中解码recipe，配方标识符不需要解码。
         @Override
-        public @Nullable LPDimensionFinderRecipeType fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
+        public @Nullable DimensionFinderRecipeType fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(pBuffer.readInt(),Ingredient.EMPTY);
             for (int i=0;i < inputs.size();i++){
                 inputs.set(i,Ingredient.fromNetwork(pBuffer));
             }
             ItemStack output = pBuffer.readItem();
             int time = pBuffer.readInt();
-            return new LPDimensionFinderRecipeType(pRecipeId,output,inputs, time);
+            return new DimensionFinderRecipeType(pRecipeId,output,inputs, time);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf pBuffer, LPDimensionFinderRecipeType pRecipe) {
+        public void toNetwork(FriendlyByteBuf pBuffer, DimensionFinderRecipeType pRecipe) {
             pBuffer.writeInt(pRecipe.getIngredients().size());
             for (Ingredient ing : pRecipe.getIngredients()){
                 ing.toNetwork(pBuffer);

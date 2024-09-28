@@ -1,9 +1,9 @@
 package com.linweiyun.lycoris.block.blockentity;
 
+import com.linweiyun.lycoris.block.LPBlockEntities;
 import com.linweiyun.lycoris.items.custom.BatteryItem;
-import com.linweiyun.lycoris.recipetype.AssemblingMachineRecipe;
 import com.linweiyun.lycoris.recipetype.DecompositionExtractorRecipe;
-import com.linweiyun.lycoris.screen.AssemblingMachineMenu;
+import com.linweiyun.lycoris.recipetype.WeaponWorkbenchRecipeType;
 import com.linweiyun.lycoris.screen.DecompositionExtractorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +16,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.AirItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -172,6 +171,7 @@ public class DecompositionExtractorBlockEntity extends BlockEntity implements Me
             // 没有合成表就重置
             entity.resetProgress();
             setChanged(level,blockPos,state);
+
         }
 
 
@@ -198,27 +198,33 @@ public class DecompositionExtractorBlockEntity extends BlockEntity implements Me
                 for (Ingredient ingredient : recipe.get().getIngredients()) {
                     for (ItemStack itemStack : ingredient.getItems()) {
                         Random random = new Random();
+
+
+                        //计算不输出物品的可能性
                         int isEmptySlot = DecompositionExtractorRecipe.getIsEmpty(itemStack);
                         int emptyProbability = random.nextInt(100) + 1;
                         ItemStack craftItem = new ItemStack(Items.AIR);
                         if (emptyProbability <= isEmptySlot){
                             craftItem = new ItemStack(Items.AIR);
-                        } else {
+                        }
+
+                        //正常合成
+                        else {
+                            //获取和添加nbt
+                            ItemStack outStack = new ItemStack(itemStack.getItem());
                             String nbtId = DecompositionExtractorRecipe.getNbtId(itemStack);
-                            String nbtValue = DecompositionExtractorRecipe.getNbtValue(itemStack);
+                            if (!nbtId.isEmpty()) {
+                                CompoundTag nbt = outStack.getOrCreateTag();
+                                String nbtValue = DecompositionExtractorRecipe.getNbtValue(itemStack);
+                                nbt.putString(nbtId, nbtValue);
+                                outStack.setTag(nbt);
+                            }
 
-                            // 创建或获取 NBT 数据
-                            CompoundTag nbt = itemStack.getOrCreateTag();
 
-                            // 添加药水效果的 NBT 标签
-                            nbt.putString(nbtId, nbtValue);
-
-                            // 设置 NBT 数据
-                            itemStack.setTag(nbt);
-
+                            //计算输出多少个物品
                             int randomNumber = random.nextInt(100) + 1;
                             int number = DecompositionExtractorRecipe.getMaxCount(itemStack) - DecompositionExtractorRecipe.getMinCount(itemStack) + 1;
-                            int addCount = 0;
+                            int addCount = 0;//最终输出的物品数量
                             int perCount = 100 / number;
                             for (int i = 0; i < number; i++) {
                                 if (randomNumber <= perCount * (i + 1)) {
@@ -226,27 +232,32 @@ public class DecompositionExtractorBlockEntity extends BlockEntity implements Me
                                     break;
                                 }
                             }
+
+
                             boolean added = false;
                             for (int j = 0; j < 6; j++) {
-                                ItemStack currentStack = entity.itemStackHandler.getStackInSlot(j);
-                                if (itemStack.getItem().equals(currentStack.getItem())) {
-                                    if (currentStack.getCount() + addCount <= itemStack.getMaxStackSize()) {
-                                        craftItem = new ItemStack(itemStack.getItem(), currentStack.getCount() + addCount);
-                                        craftItem.setTag(itemStack.getTag());
-                                        entity.itemStackHandler.setStackInSlot(j, craftItem);
-                                        added = true;
-                                        break;
-                                    } else if (currentStack.getCount() + addCount > itemStack.getMaxStackSize()) {
-                                        int overflow = addCount - (itemStack.getMaxStackSize() - currentStack.getCount());
-                                        entity.itemStackHandler.setStackInSlot(j, new ItemStack(itemStack.getItem(), itemStack.getMaxStackSize()));
-                                        addCount = overflow;
+                                ItemStack currentStack = entity.itemStackHandler.getStackInSlot(j);//获取槽位当前物品
+                                if (outStack.getItem().equals(currentStack.getItem())) {
+                                    if (currentStack.getCount() < outStack.getMaxStackSize()){
+                                        if (currentStack.getCount() + addCount <= outStack.getMaxStackSize()) {
+                                            outStack.setCount(currentStack.getCount() + addCount);
+                                            entity.itemStackHandler.setStackInSlot(j, outStack);
+                                            added = true;
+                                            break;
+                                        } else if (currentStack.getCount() + addCount > itemStack.getMaxStackSize()) {
+                                            int overflow = addCount - (itemStack.getMaxStackSize() - currentStack.getCount());
+                                            outStack.setCount(outStack.getMaxStackSize());
+                                            entity.itemStackHandler.setStackInSlot(j, outStack);
+                                            addCount = overflow;
+                                        }
                                     }
+
                                 }
                                 if (entity.itemStackHandler.getStackInSlot(j).isEmpty()) {
-                                    // 将新 ItemStack 放入空槽位
-                                    craftItem = new ItemStack(itemStack.getItem(), addCount);
-                                    craftItem.setTag(itemStack.getTag()); // 确保 NBT 数据正确复制
-                                    entity.itemStackHandler.setStackInSlot(j, craftItem);
+                                    if (addCount <= outStack.getMaxStackSize()){
+                                        outStack.setCount(addCount);
+                                    }
+                                    entity.itemStackHandler.setStackInSlot(j, outStack);
                                     added = true;
                                     break;
                                 }
@@ -255,10 +266,10 @@ public class DecompositionExtractorBlockEntity extends BlockEntity implements Me
                                 // 如果没有找到合适的槽位，则尝试再次寻找空槽位
                                 for (int j = 0; j < 6; j++) {
                                     if (entity.itemStackHandler.getStackInSlot(j).isEmpty()) {
-                                        // 将新 ItemStack 放入空槽位
-                                        craftItem = new ItemStack(itemStack.getItem(), addCount);
-                                        craftItem.setTag(itemStack.getTag()); // 确保 NBT 数据正确复制
-                                        entity.itemStackHandler.setStackInSlot(j, craftItem);
+                                        if (addCount <= outStack.getMaxStackSize()){
+                                            outStack.setCount(addCount);
+                                        }
+                                        entity.itemStackHandler.setStackInSlot(j, outStack);
                                         added = true;
                                         break;
                                     }
@@ -302,67 +313,29 @@ public class DecompositionExtractorBlockEntity extends BlockEntity implements Me
         if (!recipe.isPresent()) {
             return false;
         }
-
-        DecompositionExtractorRecipe Trepice = recipe.get();
-        Map<Item, Integer> itemCounts = new HashMap<>();
-        int totalRequiredEmptySlots = 0;
-
-        // 计算每种物品所需的总数量
-        for (Ingredient ingredient : Trepice.getIngredients()) {
-            for (ItemStack itemStack : ingredient.getItems()) {
-                Item item = itemStack.getItem();
-                int maxCount = Trepice.getMaxCount(itemStack);
-                itemCounts.put(item, itemCounts.getOrDefault(item, 0) + maxCount);
-            }
-        }
-
-        // 计算每个物品所需的最大空槽位数
-        for (Map.Entry<Item, Integer> entry : itemCounts.entrySet()) {
-            Item item = entry.getKey();
-            int requiredCount = entry.getValue();
-            int availableSpace = 0;
-
-            for (int i = 0; i < 6; i++) {
-                ItemStack stack = inventory.getItem(i);
-                if (stack.isEmpty()) {
-                    availableSpace += item.getMaxStackSize();
-                } else if (stack.getItem() == item) {
-                    availableSpace += item.getMaxStackSize() - stack.getCount();
-                }
-            }
-
-            if (availableSpace < requiredCount) {
-                return false; // 如果有一个物品没有足够的空槽位，则停止合成
-            }
-        }
-
-        // 计算总的空槽位数
-        int haveEmptySlot = 0;
+        int airSlot = 0;
+        int requireSlot = recipe.get().getIngredients().size();
+        int canStackSlot = 0;
         for (int i = 0; i < 6; i++) {
-            if (inventory.getItem(i).isEmpty()) {
-                haveEmptySlot++;
+            ItemStack itemStack = inventory.getItem(i);
+            if (itemStack.isEmpty()) {
+                airSlot++;
             }
-        }
+            if (airSlot >= requireSlot){
+                return true;
+            }
+            for (Ingredient ingredient : recipe.get().getIngredients()){
 
-        // 计算总的所需空槽位数
-        for (Map.Entry<Item, Integer> entry : itemCounts.entrySet()) {
-            Item item = entry.getKey();
-            int requiredCount = entry.getValue();
-            int availableSpace = 0;
-
-            for (int i = 0; i < 6; i++) {
-                ItemStack stack = inventory.getItem(i);
-                if (stack.isEmpty()) {
-                    availableSpace += item.getMaxStackSize();
-                } else if (stack.getItem() == item) {
-                    availableSpace += item.getMaxStackSize() - stack.getCount();
+                for (ItemStack recipeStack : ingredient.getItems()){
+                    if (itemStack.getItem().equals(recipeStack.getItem())){
+                        if (itemStack.getCount() + DecompositionExtractorRecipe.getMaxCount(recipeStack) <= itemStack.getMaxStackSize()){
+                            canStackSlot++;
+                        }
+                    }
                 }
             }
-
-            totalRequiredEmptySlots += (requiredCount - availableSpace) / item.getMaxStackSize();
         }
-
-        return haveEmptySlot >= totalRequiredEmptySlots;
+        return airSlot + canStackSlot >= requireSlot;
     }
 
 

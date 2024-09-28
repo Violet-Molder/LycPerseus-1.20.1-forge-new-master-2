@@ -3,7 +3,7 @@ package com.linweiyun.lycoris.block.custom;
 import com.linweiyun.lycoris.GenAnimations.AssemblingMachineBlockEntityRender;
 import com.linweiyun.lycoris.LycPerseusMod;
 import com.linweiyun.lycoris.block.blockentity.AssemblingMachineBlockEntity;
-import com.linweiyun.lycoris.block.blockentity.LPBlockEntities;
+import com.linweiyun.lycoris.block.LPBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;

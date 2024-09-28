@@ -27,6 +27,7 @@ public class LPItemGroups {
                                 pOutbut.accept(LPItems.DIVINE_CRYSTAL.get());
                                 pOutbut.accept(LPItems.BIOSOLID_FUELS.get());
                                 pOutbut.accept(LPBlocks.DIMENSION_FINDER.get());
+                                pOutbut.accept(LPBlocks.WEAPON_WORKBENCH.get());
 
                                 pOutbut.accept(LPBlocks.ASSEMBLING_MACHINE.get());
                                 pOutbut.accept(LPBlocks.DECOMPOSITION_EXTRACTOR.get());
