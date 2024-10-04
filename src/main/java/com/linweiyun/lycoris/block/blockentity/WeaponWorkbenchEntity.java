@@ -1,5 +1,6 @@
 package com.linweiyun.lycoris.block.blockentity;
 
+import com.linweiyun.lycoris.LycPerseusMod;
 import com.linweiyun.lycoris.block.LPBlockEntities;
 import com.linweiyun.lycoris.block.custom.WeaponWorkbench;
 import com.linweiyun.lycoris.items.custom.BatteryItem;
@@ -16,19 +17,26 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.MinecartHopper;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -36,23 +44,45 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+
 public class WeaponWorkbenchEntity extends BlockEntity implements MenuProvider {
+
     public ItemStackHandler itemStackHandler = new ItemStackHandler(20) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
         }
 
+
+
         @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return switch (slot) {
-                case 0, 1 -> !(stack.getItem() instanceof SoulItem) && !(stack.getItem() instanceof ExtraItem);
-                case 2 -> stack.getItem() instanceof SoulItem;
-                case 3, 4, 5 -> stack.getItem() instanceof ExtraItem;
-                default -> super.isItemValid(slot, stack);
-            };
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (isBelowHopperOrHopperMinecart()){
+                return ItemStack.EMPTY;
+            }
+            return super.extractItem(slot, amount, simulate);
         }
     };
+    private boolean isBelowHopperOrHopperMinecart() {
+        Level level = getLevel();
+        if (level != null) {
+            BlockPos belowPos = getBlockPos().below();
+            BlockState belowState = level.getBlockState(belowPos);
+            Block belowBlock = belowState.getBlock();
+
+            if (belowBlock == Blocks.HOPPER) {
+                return true;
+            }
+
+            AABB aabb = new AABB(belowPos);
+            for (Entity entity : level.getEntities((Entity) null, aabb, e -> e instanceof MinecartHopper)) {
+                if (entity instanceof MinecartHopper) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 
 
@@ -89,6 +119,8 @@ public class WeaponWorkbenchEntity extends BlockEntity implements MenuProvider {
             }
         };
     }
+
+
 
     @Override
     public Component getDisplayName() {
@@ -179,7 +211,7 @@ public class WeaponWorkbenchEntity extends BlockEntity implements MenuProvider {
                     }
                 }
             } else {
-                for (int i = 2; i < 20; i++){
+                for (int i = 1; i < 20; i++){
                     pBlockEntity.itemStackHandler.setStackInSlot(i, ItemStack.EMPTY);
                 }
             }

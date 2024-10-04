@@ -66,8 +66,8 @@ public class WeaponWorkbenchCategory implements IRecipeCategory<WeaponWorkbenchR
         // 根据实际的输入项数量设置槽位
         for (int i = 0; i < Math.min(recipe.getIngredients().size(), 18); i++) {
             // 计算新的坐标
-            int x = 26 + (i % 3) * 18; // 槽位x坐标
-            int y = 7 + (i / 3) * 18; // 槽位y坐标
+            int x = 26 + (i % 6) * 18; // 槽位x坐标
+            int y = 7 + (i / 6) * 19; // 槽位y坐标
 
             // 获取当前索引的配料
             Ingredient ingredient = recipe.getIngredients().get(i);

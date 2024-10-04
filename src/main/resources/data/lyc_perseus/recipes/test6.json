@@ -8,6 +8,7 @@
       "nbtValue3": "minecraft:healing"
     },
 
+
     {
       "item": "minecraft:iron_ingot"
     },
@@ -15,7 +16,45 @@
     {
       "item": "minecraft:gold_ingot"
     },
-    {"item": "minecraft:diamond"}
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    }
 
   ],
   "output": {
